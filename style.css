@@ -10,8 +10,9 @@ body {
 }
 
 main {
-  width: 200px;
-  font-size: 36px;
+  max-width: 300px;
+  width: 90%;
+  font-size: 48px;
   margin: 50px auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -20,6 +21,8 @@ main {
 
 main div {
   padding: 5px;
+  min-height: 100px;
+  min-width: 100px;
   display: grid;
   place-content: center;
 }
@@ -30,7 +33,7 @@ main div:nth-child(3),
 main div:nth-child(4),
 main div:nth-child(5),
 main div:nth-child(6) {
-  border-bottom: 5px solid gray;
+  border-bottom: 5px solid tomato;
 }
 
 main div:nth-child(1),
@@ -39,5 +42,5 @@ main div:nth-child(7),
 main div:nth-child(2),
 main div:nth-child(5),
 main div:nth-child(8) {
-  border-right: 5px solid gray;
+  border-right: 5px solid tomato;
 }

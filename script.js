@@ -24,8 +24,15 @@ const Gameboard = (() => {
   ]
   const getFields = () => fields
   const setField = (line, field) => fields[line][field] = turn.getMarker()
+  const clearFields = () => {
+    fields = [
+      ['', '', ''],
+      ['', '', ''],
+      ['', '', '']
+    ]
+  }
 
-  return { getFields, setField }
+  return { getFields, setField, clearFields }
 })()
 
 const DisplayController = (() => {
@@ -48,13 +55,37 @@ const DisplayController = (() => {
 })()
 
 const Game = (() => {
+  let fields = Gameboard.getFields()
+  const concatFields = () => {
+    let array = []
+    fields.forEach(line => {
+      const newFields = array.concat(line)
+      array = newFields
+    })
+
+    return array
+  }
+  const WINNER_COMBOS = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [6, 4, 2]
+  ]
   const changeTurn = () => turn === player1 ? turn = player2 : turn = player1
   const findWinner = () => {
-    let winner
-    let fields = Gameboard.getFields()
+    const newFields = concatFields()
 
-    for (const i of fields) {
-      console.log(i[0])
+    for (const combo of WINNER_COMBOS) {
+      const [a, b, c] = combo
+
+      if (newFields[a] !== '' && newFields[a] === newFields[b] && newFields[a] === newFields[c]) {
+        console.log('you win')
+        Gameboard.clearFields()
+      }
     }
   }
 

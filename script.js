@@ -23,27 +23,40 @@ const Gameboard = (() => {
     ['', '', '']
   ]
   const getFields = () => fields
+  const setField = (line, field) => fields[line][field] = turn.getMarker()
 
-  return { getFields }
+  return { getFields, setField }
+})()
+
+const DisplayController = (() => {
+  const fields = Gameboard.getFields()
+  fields.forEach((line, i) => {
+    line.forEach((field, index) => {
+      const div = document.createElement('div')
+      div.textContent = field
+      div.addEventListener('click', () => {
+        if (fields[i][index] === '') {
+          Gameboard.setField(i, index)
+          div.textContent = fields[i][index]
+          Game.changeTurn()
+          Game.findWinner()
+        }
+      })
+      gameboard.appendChild(div)
+    })
+  })
 })()
 
 const Game = (() => {
   const changeTurn = () => turn === player1 ? turn = player2 : turn = player1
+  const findWinner = () => {
+    let winner
+    let fields = Gameboard.getFields()
 
-  return { changeTurn }
+    for (const i of fields) {
+      console.log(i[0])
+    }
+  }
+
+  return { changeTurn, findWinner }
 })()
-
-const DisplayController = (() => {
-  Gameboard.getFields().forEach(line => {
-    line.forEach(field => {
-      const div = document.createElement('div')
-      div.textContent = field
-      div.addEventListener('click', () => {
-        div.textContent = turn.getMarker()
-        Game.changeTurn()
-      })
-      gameboard.appendChild(div)
-    })
-  });
-})()
-

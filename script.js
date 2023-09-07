@@ -1,4 +1,6 @@
 const gameboard = document.querySelector('#gameboard')
+const result = document.querySelector('#result')
+const restart = document.querySelector('#restart')
 
 const Player = (name, mark) => {
   const getName = () => name
@@ -45,8 +47,8 @@ const DisplayController = (() => {
         if (fields[i][index] === '') {
           Gameboard.setField(i, index)
           div.textContent = fields[i][index]
-          Game.changeTurn()
           Game.findWinner()
+          Game.changeTurn()
         }
       })
       gameboard.appendChild(div)
@@ -82,8 +84,19 @@ const Game = (() => {
     for (const combo of WINNER_COMBOS) {
       const [a, b, c] = combo
 
-      if (newFields[a] !== '' && newFields[a] === newFields[b] && newFields[a] === newFields[c]) {
-        console.log('you win')
+      if (
+        newFields[a] !== '' &&
+        newFields[a] === newFields[b] &&
+        newFields[a] === newFields[c]
+      ) {
+        const playerMarker = turn.getMarker()
+        result.textContent = `Player ${playerMarker} win!`
+        Gameboard.clearFields()
+      } else if (
+        !newFields.includes('') && newFields[a] !== newFields[b] ||
+        !newFields.includes('') && newFields[a] !== newFields[c]
+      ) {
+        result.textContent = 'Tie'
         Gameboard.clearFields()
       }
     }

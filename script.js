@@ -2,6 +2,11 @@ const gameboard = document.querySelector('#gameboard')
 const result = document.querySelector('#result')
 const restart = document.querySelector('#restart')
 
+restart.addEventListener('click', () => {
+  Gameboard.clearFields()
+  DisplayController.updateDisplay()
+})
+
 const Player = (name, mark) => {
   const getName = () => name
   const getMarker = () => mark
@@ -39,6 +44,13 @@ const Gameboard = (() => {
 
 const DisplayController = (() => {
   const fields = Gameboard.getFields()
+  const updateDisplay = () => {
+    fields.forEach((line, i) => {
+      line.forEach((field, index) => {
+        gameboard.childNodes.forEach(node => node.textContent = field)
+      })
+    })
+  }
   fields.forEach((line, i) => {
     line.forEach((field, index) => {
       const div = document.createElement('div')
@@ -54,6 +66,8 @@ const DisplayController = (() => {
       gameboard.appendChild(div)
     })
   })
+
+  return { updateDisplay }
 })()
 
 const Game = (() => {
@@ -92,12 +106,14 @@ const Game = (() => {
         const playerMarker = turn.getMarker()
         result.textContent = `Player ${playerMarker} win!`
         Gameboard.clearFields()
+        DisplayController.updateDisplay()
       } else if (
         !newFields.includes('') && newFields[a] !== newFields[b] ||
         !newFields.includes('') && newFields[a] !== newFields[c]
       ) {
         result.textContent = 'Tie'
         Gameboard.clearFields()
+        DisplayController.updateDisplay()
       }
     }
   }
